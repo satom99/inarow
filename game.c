@@ -67,12 +67,10 @@ int heuristic(struct Node* node) {
             }
             if(count == 2) {
                 value -= 500;
-            }
-            if(count == 3) {
-                value -= 50000;
-            }
-            if(count == 4) {
-                value -= 5000000;
+            } else if(count == 3) {
+                value -= 2500;
+            } else if(count == 4) {
+                value -= 12500;
             }
         }
     }
@@ -92,44 +90,13 @@ int heuristic(struct Node* node) {
             }
             if(count == 2) {
                 value -= 500;
-            }
-            if(count == 3) {
-                value -= 50000;
-            }
-            if(count == 4) {
-                value -= 5000000;
+            } else if(count == 3) {
+                value -= 2500;
+            } else if(count == 4) {
+                value -= 12500;
             }
         }
     }
-    ///////////////////////////////////
-    // Left to right diagonal check //
-    ///////////////////////////////////
-    for(int row = N-1; row >= 0; row--) {
-        for(int column = 0; column < N; column++) {
-            for(int offset = 0; offset < row+1; offset++) {
-                int count = 0;
-                while(1) {
-                    char square = node->board[row-offset][column+offset];
-                    if(square == PLAYER) {
-                        offset++;
-                        count++;
-                    } else {
-                        break;
-                    }
-                }
-                if(count == 2) {
-                    value -= 500;
-                }
-                if(count == 3) {
-                    value -= 50000;
-                }
-                if(count == 4) {
-                    value -= 5000000;
-                }
-            }
-        }
-    }
-
     return value;
 }
 
