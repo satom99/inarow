@@ -8,15 +8,15 @@
 #define COMPUTER 'O'
 #define DEPTH 2
 
-struct Node{
+typedef struct Node{
     char board[N][N];
     int heuristic;
     int children_count;
     struct Node** children;
-};
+} Node;
 
-struct Node* createRoot() {
-    struct Node* root = malloc(sizeof(struct Node));
+Node* createRoot() {
+    Node* root = malloc(sizeof(Node));
 
     for(int row = 0; row < N; row++) {
         for(int column = 0; column < N; column++) {
@@ -26,7 +26,7 @@ struct Node* createRoot() {
     return root;
 }
 
-int freeColumns(struct Node* node) {
+int freeColumns(Node* node) {
     int count = 0;
 
     for(int column = 0; column < N; column++) {
@@ -38,7 +38,7 @@ int freeColumns(struct Node* node) {
     return count;
 }
 
-int playColumn(struct Node* node, int column, char player) {
+int playColumn(Node* node, int column, char player) {
     for(int row = N-1; row >= 0; row--) {
         char* square = &node->board[row][column];
         if(*square == EMPTY) {
@@ -49,7 +49,7 @@ int playColumn(struct Node* node, int column, char player) {
     return 0;
 }
 
-int heuristic(struct Node* node) {
+int heuristic(Node* node) {
     int value = 0;
     //////////////////////
     // Horizontal check //
@@ -100,7 +100,7 @@ int heuristic(struct Node* node) {
     return value;
 }
 
-void copyBoard(struct Node* parent, struct Node* child) {
+void copyBoard(Node* parent, Node* child) {
     for(int row = 0; row < N; row++) {
         for(int column = 0; column < N; column++) {
             child->board[row][column] = parent->board[row][column];
@@ -108,7 +108,7 @@ void copyBoard(struct Node* parent, struct Node* child) {
     }
 }
 
-void performComputer(struct Node* node, int level) {
+void performComputer(Node* node, int level) {
     ////////////////////////
     // Maximum DEPTH halt //
     ////////////////////////
@@ -121,7 +121,7 @@ void performComputer(struct Node* node, int level) {
     // Children array //
     ////////////////////
     node->children_count = freeColumns(node);
-    node->children = malloc(sizeof(struct Node**)*node->children_count);
+    node->children = malloc(sizeof(Node**)*node->children_count);
 
     if(node->children_count > 0) {
         /////////////////////////////////////
@@ -134,7 +134,7 @@ void performComputer(struct Node* node, int level) {
             if(square != EMPTY) {
                 continue;
             }
-            struct Node* child = malloc(sizeof(struct Node));
+            Node* child = malloc(sizeof(Node));
 
             copyBoard(node, child);
 
@@ -155,11 +155,11 @@ void performComputer(struct Node* node, int level) {
         int maximum = INT_MIN;
         int minimum = INT_MAX;
 
-        struct Node* max_child;
-        struct Node* min_child;
+        Node* max_child;
+        Node* min_child;
 
         for(int index = 0; index < node->children_count; index++) {
-            struct Node* child = node->children[index];
+            Node* child = node->children[index];
             int value = child->heuristic;
             if(maximum < value) {
                 maximum = value;
@@ -193,7 +193,7 @@ void performComputer(struct Node* node, int level) {
     free(node->children);
 }
 
-void showBoard(struct Node* node) {
+void showBoard(Node* node) {
     for(int column = 0; column < N; column++) {
         printf("| %i ", column + 1);
     }
@@ -208,7 +208,7 @@ void showBoard(struct Node* node) {
 }
 
 int main() {
-    struct Node* root = createRoot();
+    Node* root = createRoot();
 
     while(1) {
         showBoard(root);
