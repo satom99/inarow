@@ -4,7 +4,7 @@
 
 #define N 8
 #define EMPTY ' '
-#define PLAYER 'X'
+#define HUMAN 'X'
 #define COMPUTER 'O'
 #define DEPTH 2
 
@@ -59,7 +59,7 @@ int heuristic(struct Node* node) {
             int count = 0;
             while(1) {
                 char square = node->board[row][column++];
-                if(square == PLAYER) {
+                if(square == HUMAN) {
                     count++;
                 } else {
                     break;
@@ -82,7 +82,7 @@ int heuristic(struct Node* node) {
             int count = 0;
             while(1) {
                 char square = node->board[row++][column];
-                if(square == PLAYER) {
+                if(square == HUMAN) {
                     count++;
                 } else {
                     break;
@@ -138,9 +138,9 @@ void performComputer(struct Node* node, int level) {
 
             copyBoard(node, child);
 
-            char identity = (level % 2) ? PLAYER : COMPUTER;
+            char player = (level % 2) ? HUMAN : COMPUTER;
 
-            playColumn(child, column, identity);
+            playColumn(child, column, player);
 
             performComputer(child, level + 1);
 
@@ -223,7 +223,7 @@ int main() {
             if((column < 1) || (column > N)) {
                 continue;
             }
-            if(!playColumn(root, --column, PLAYER)) {
+            if(!playColumn(root, --column, HUMAN)) {
                 continue;
             }
             break;
